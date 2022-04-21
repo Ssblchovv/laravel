@@ -26,6 +26,7 @@ class PostUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
+            'category' => 'required',
 //            'slug' => 'required|unique:posts,slug',
             'slug' => ['required', Rule::unique('posts', 'slug')->ignore($this->post)],
             'content' => 'required',

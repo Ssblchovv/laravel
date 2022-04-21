@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\PostController;
@@ -33,11 +35,12 @@ Route::put('/books/{book}', [BookController::class, 'update'])->name('books.upda
 Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
 Route::get('/books/show-api', [BookController::class, 'showApi'])->name('books.show.api');
 
+Route::post('/categories/{category}/make-default', [CategoryController::class, 'default'])->name('categories.make.default');
+Route::post('/categories/{category}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
+Route::resource('categories', CategoryController::class);
 
 
-//Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit')->middleware('auth', 'throttle:5,1');
-
-
+Route::resource('authors', AuthorController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

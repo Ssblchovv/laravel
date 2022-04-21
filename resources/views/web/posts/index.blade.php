@@ -14,11 +14,23 @@
     <form method="POST" action="{{ route('posts.store') }}" class="mt-10 space-y-5">
         @csrf
         <div>
+            <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+            <select id="category" name="category" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-slate-500 focus:border-slate-500 sm:text-sm rounded-md">
+                @foreach($categories as $index => $categoryName)
+                    <option value="{{$index}}" @selected(old('category') == $index)>
+                        {{$categoryName}}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div>
             <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
             <div class="mt-1">
-              <input type="text" name="title" id="title" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" value="{{ old('title') }}">
+                <input type="text" name="title" id="title" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" value="{{ old('title') }}">
             </div>
-          </div>
+        </div>
+
         <div>
             <label for="slug" class="block text-sm font-medium text-gray-700">Slug</label>
             <div class="mt-1">
@@ -50,7 +62,8 @@
       <tr>
         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
-        <th scope="col" class="relative px-6 py-3">
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+          <th scope="col" class="relative px-6 py-3">
           <span class="sr-only">Edit</span>
         </th>
         <th scope="col" class="relative px-6 py-3">
@@ -63,6 +76,7 @@
          <tr>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{$postItem->title}}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{$postItem->slug}}</td>
+             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{$postItem->category->name}}</td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
               <a href="{{route('posts.edit', ['post' => $postItem])}}" class="text-slate-600 hover:text-slate-900">Edit</a>
             </td>

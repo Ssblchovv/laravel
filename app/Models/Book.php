@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\ValueObjects\Money;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Book
@@ -30,6 +33,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Book whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Book whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $year
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Author[] $authors
+ * @property-read int|null $authors_count
+ * @method static \Database\Factories\BookFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereYear($value)
  */
 class Book extends Model
 {
@@ -38,4 +46,21 @@ class Book extends Model
     // protected $fillable = ['isbn', 'title', 'price', 'page', 'excerpt'];
 
     protected $guarded = [];
+
+    public function authors(): BelongsToMany
+    {
+        return $this->belongsToMany(Author::class);
+    }
+
+    public function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value): Money => new Money(
+                amount: $value,
+            ),
+            set: fn (Money $value): array => [
+                'price' => $value->amount,
+            ],
+        );
+    }
 }

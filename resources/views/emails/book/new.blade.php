@@ -5,5 +5,5 @@
     ISBN: {{ $book->isbn }}
 </div>
 <div>
-    Price: {{ $book->price }}
+    Price: {{ $book->price->format() }}
 </div>
