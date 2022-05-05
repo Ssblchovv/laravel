@@ -43,9 +43,8 @@ class Book extends Model
 {
     use HasFactory;
 
-    // protected $fillable = ['isbn', 'title', 'price', 'page', 'excerpt'];
+     protected $fillable = ['isbn', 'title', 'price', 'page', 'excerpt', 'image', 'year'];
 
-    protected $guarded = [];
 
     public function authors(): BelongsToMany
     {

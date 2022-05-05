@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Http\Requests\Post;
+
+use OpenApi\Attributes as OA;
 use Illuminate\Foundation\Http\FormRequest;
+
 
 class PostRequest extends FormRequest
 {
+
 
     public function authorize(): bool
     {

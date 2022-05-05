@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\PostController;
@@ -21,6 +22,8 @@ use App\Http\Controllers\PostController;
 Route::get('/', function () {
     return view('web.layout.layout');
 });
+
+Route::post('/users/token', [UserController::class, 'tokenUser'])->name('user.get.token');
 
 Route::get('/posts/show-api', [PostController::class, 'showApi'])->name('posts.show.api');
 

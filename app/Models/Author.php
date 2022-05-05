@@ -41,9 +41,7 @@ class Author extends Model
 {
     use HasFactory;
 
-
-
-    protected $guarded = [];
+    protected $fillable = ['first_name', 'last_name', 'patronymic', 'email', 'biography'];
 
     public function books(): BelongsToMany
     {

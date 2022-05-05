@@ -24,11 +24,12 @@ class PostUpdateRequest extends FormRequest
      */
     public function rules()
     {
+
+
         return [
             'title' => 'required|max:255',
             'category' => 'required',
-//            'slug' => 'required|unique:posts,slug',
-            'slug' => ['required', Rule::unique('posts', 'slug')->ignore($this->post)],
+            'slug' => ['required', Rule::unique('posts', 'slug')->ignore($this->id)],
             'content' => 'required',
         ];
     }

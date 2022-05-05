@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(Sms::class, function (Application $app) {
             return new SmsLog();
         });
+        $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
 
 //        $this->app->bind(Sms::class, function (Application $app) {
 //            return new SmsLog();

@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\QueryBuilders\PostQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -46,6 +48,32 @@ class Post extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo(Category::class);
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+   public function comments(): HasMany
+   {
+        return $this->hasMany(Comment::class);
+   }
+
+//    public function newEloquentBuilder($query): PostQueryBuilder
+//    {
+//        return new PostQueryBuilder($query);
+//    }
+
+//    public function scopeFilter($query, array $filters)
+//    {
+//        $query->when($filters['id'] ?? null, function ($query, $id) {
+//            $query->where('id', $id);
+//        })->when($filters['slug'] ?? null, function ($query, $slug) {
+//            $query->where('slug', $slug);
+//        });
+//    }
+
+
 }
