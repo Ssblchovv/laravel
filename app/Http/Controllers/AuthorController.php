@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Dto\AuthorDto;
 use App\Models\Author;
+use App\Services\FileUploader\FileUploader;
 use App\ValueObjects\Email;
 use App\ValueObjects\Name;
 use Illuminate\Http\RedirectResponse;
@@ -37,8 +38,9 @@ class AuthorController extends Controller
         $this->validate($request, [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|email'
+            'email' => 'required|email',
         ]);
+
 
         $dto = new AuthorDto(
             name: new Name(

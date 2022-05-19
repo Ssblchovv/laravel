@@ -103,6 +103,9 @@
 
 
     {{ $postsCollection->links() }}
+
+
+
 @endsection
 
 @push('scripts')

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Infrastructure\LaravelMultiDispatcher;
+use App\Infrastructure\MultiDispatcher;
 use App\Services\Sms\Sms;
 use App\Services\Sms\SmsLog;
 use Illuminate\Foundation\Application;
@@ -17,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Sms::class, function (Application $app) {
+//            if($app->runningUnitTests()){
+//
+//            }
             return new SmsLog();
         });
         $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
@@ -24,6 +29,9 @@ class AppServiceProvider extends ServiceProvider
 //        $this->app->bind(Sms::class, function (Application $app) {
 //            return new SmsLog();
 //        });
+
+
+        $this->app->bind(MultiDispatcher::class, LaravelMultiDispatcher::class);
     }
 
     /**

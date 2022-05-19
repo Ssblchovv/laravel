@@ -27,32 +27,25 @@ class BookService
     {
         $this->isbnIsUnique($bookDto->isbn);
 
-        \DB::beginTransaction();
-
         $book = new Book;
-        $book->isbn = $bookDto->isbn;
-        $book->title = $bookDto->title;
-        $book->price = $bookDto->price;
-        $book->page = $bookDto->page;
-        $book->year = $bookDto->year;
-        $book->excerpt = $bookDto->excerpt;
-        $book->save();
 
-        $book->authors()->sync($authors_ids);
-
-        \DB::commit();
-
-
-//        $book->authors()->attach($authors_ids);
-
-//        detach
+        $this->connection->transaction(function() use ($bookDto, $authors_ids, $book) {
+            $book->isbn = $bookDto->isbn;
+            $book->title = $bookDto->title;
+            $book->price = $bookDto->price;
+            $book->page = $bookDto->page;
+            $book->year = $bookDto->year;
+            $book->excerpt = $bookDto->excerpt;
+            $book->save();
+            $book->authors()->sync($authors_ids);
+        });
 
 
         return $book;
     }
 
 
-    public function notifyBook($book)
+    public function notifyBook($book): void
     {
         $this->mailer->send(new NewBook($book));
 //        Mail::send(new NewBook($book));
@@ -72,7 +65,6 @@ class BookService
         $old_price = $book->price;
 
         $this->connection->transaction(function() use ($book, $bookDto, $authors_ids) {
-//        \DB::transaction(function () use($book, $bookDto, $authors_ids) {
             $book->update([
                 'isbn' => $bookDto->isbn,
                 'title' => $bookDto->title,
@@ -83,8 +75,6 @@ class BookService
             ]);
             $book->authors()->sync($authors_ids);
         });
-
-
 
         if($bookDto->price < $old_price){
             $this->dispatcher->dispatch(

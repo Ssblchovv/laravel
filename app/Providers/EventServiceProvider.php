@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\BookCreated;
 use App\Events\BookUpdatePrice;
+use App\Listeners\SendNotifyAfterCreateBook;
 use App\Listeners\SendPriceChangeNotify;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -20,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        BookCreated::class => [
+            SendNotifyAfterCreateBook::class
+        ]
     ];
 
     /**
@@ -33,6 +38,7 @@ class EventServiceProvider extends ServiceProvider
             BookUpdatePrice::class,
             [SendPriceChangeNotify::class, 'handle']
         );
+
     }
 
     /**

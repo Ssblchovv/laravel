@@ -86,9 +86,9 @@ class CategoryController extends Controller
 
     public function default(Category $category): RedirectResponse
     {
-        if($defaultCategory = Category::defaultCategory()){
-            $defaultCategory->makeNoDefault();
-        }
+//        if($defaultCategory = Category::defaultCategory()){
+//            $defaultCategory->makeNoDefault();
+//        }
         $category->makeDefault();
         return back()->with('success', 'The category has been successfully updated');
     }

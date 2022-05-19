@@ -30,4 +30,6 @@ class SendPriceChangeNotify
         $book_id = $event->book_id;
         Log::info('Book price change ' . $book_id);
     }
+
+
 }

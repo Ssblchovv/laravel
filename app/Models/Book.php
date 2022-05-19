@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Dto\BookDto;
+use App\Events\BookCreated;
+use App\Events\BookUpdatePrice;
 use App\ValueObjects\Money;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,10 +44,34 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory, EntityWithEvents;
 
      protected $fillable = ['isbn', 'title', 'price', 'page', 'excerpt', 'image', 'year'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::created(function (Book $book) {
+            $book->record(new BookCreated($book->id));
+        });
+    }
+
+    public static function createFromService(BookDto $bookDto): Book
+    {
+        $book = static::create([
+            'isbn' => $bookDto->isbn,
+            'title' => $bookDto->title,
+            'price' => $bookDto->price,
+            'page' => $bookDto->page,
+            'year' => $bookDto->year,
+            'excerpt' => $bookDto->excerpt,
+        ]);
+
+        $book->record(new BookCreated($book->id));
+
+        return $book;
+    }
 
     public function authors(): BelongsToMany
     {
@@ -61,5 +88,15 @@ class Book extends Model
                 'price' => $value->amount,
             ],
         );
+    }
+
+    public function changePrice($price)
+    {
+
+        if($price < $this->price->amount){
+            $this->record(new BookUpdatePrice($this->id));
+        }
+
+        $this->update(['price' => new Money($price)]);
     }
 }

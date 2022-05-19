@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\BusinessException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,8 +39,11 @@ class Category extends Model
     use HasFactory, SoftDeletes;
 //    use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'default'];
 
+    protected $casts = [
+        'default' => 'boolean',
+    ];
 
     public function posts(): HasMany
     {
@@ -53,6 +57,8 @@ class Category extends Model
 
     public function makeDefault()
     {
+        $this->overrideDefaultCategory();
+
         $this->update([
             'default' => true,
         ]);
@@ -60,8 +66,20 @@ class Category extends Model
 
     public function makeNoDefault()
     {
+
         $this->update([
             'default' => false,
         ]);
+
+    }
+
+    protected function overrideDefaultCategory()
+    {
+        $defaultCategory = self::defaultCategory();
+
+        if($defaultCategory && $defaultCategory->id === $this->id){
+            throw new BusinessException("Category already by default");
+        }
+        $defaultCategory?->makeNoDefault();
     }
 }

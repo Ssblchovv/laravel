@@ -7,6 +7,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Http\Requests\Book\BookRequest;
 use App\UseCase\Book\BookService;
+use App\UseCase\Book\BookServiceAlt;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -24,7 +25,7 @@ class BookController extends Controller
 //            $query->where('price', $value);
 //        }
 
-        $query->when($request->get('search_price') ?? null, function ($query, $price) {
+        $query->when($request->get('search_price'), function ($query, $price) {
             $query->where('price', $price);
         });
 
@@ -42,6 +43,7 @@ class BookController extends Controller
     {
 
         $book = $service->create($request->getDto(), $request->getAuthorsIds());
+
         $service->notifyBook($book);
 
         return back()->with('success', 'The book was created');
@@ -51,6 +53,8 @@ class BookController extends Controller
     public function edit($id): View
     {
         $book = Book::findOrFail($id);
+
+
         $authorsList = Author::select(['id', 'first_name', 'last_name', 'patronymic'])->get();
         $bookAuthors = $book->authors;
         $booksCollection = Book::orderBy('id', 'desc')->paginate(5);

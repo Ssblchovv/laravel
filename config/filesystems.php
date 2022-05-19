@@ -36,6 +36,10 @@ return [
             'throw' => false,
         ],
 
+        'inmemory' => [
+            'driver' => 'memory'
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
