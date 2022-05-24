@@ -11,6 +11,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class BookService
 {
@@ -23,18 +24,24 @@ class BookService
     ) {
     }
 
-    public function create(BookDto $bookDto, array $authors_ids): Book
+    public function create(BookDto $bookDto, array $authors_ids, array $fileData): Book
     {
         $this->isbnIsUnique($bookDto->isbn);
 
         $book = new Book;
 
-        $this->connection->transaction(function() use ($bookDto, $authors_ids, $book) {
+        $path = null;
+        if($fileData['hasFile']){
+            $path = Storage::putFile('uploads', $fileData['file']);
+        }
+
+        $this->connection->transaction(function() use ($bookDto, $authors_ids, $book,$path) {
             $book->isbn = $bookDto->isbn;
             $book->title = $bookDto->title;
             $book->price = $bookDto->price;
             $book->page = $bookDto->page;
             $book->year = $bookDto->year;
+            $book->image = $path;
             $book->excerpt = $bookDto->excerpt;
             $book->save();
             $book->authors()->sync($authors_ids);
@@ -96,4 +103,6 @@ class BookService
             throw new BusinessException("Book with this isbn already exists " . $isbn);
         }
     }
+
+
 }

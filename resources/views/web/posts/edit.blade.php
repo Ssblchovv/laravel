@@ -13,7 +13,7 @@
 
     <form method="POST" action="{{route('posts.update', ['post' => $post])}}" class="mt-10 space-y-5">
         @method('PUT')
-        @csrf
+
 
         <div>
             <label for="category" class="block text-sm font-medium text-gray-700">Category</label>

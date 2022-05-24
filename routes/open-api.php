@@ -22,3 +22,4 @@ Route::delete('/posts/{id}', [PostController::class, 'delete']);
 Route::get('/comments', [CommentController::class, 'index']);
 
 Route::post('/upload', [FileController::class, 'upload']);
+Route::post('/upload-private', [FileController::class, 'uploadPrivate']);

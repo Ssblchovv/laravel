@@ -9,24 +9,31 @@ use App\Models\Post;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostController extends Controller
 {
 
-    public function index(): View
+    public function index(Request $request): View
     {
         $categories = Category::pluck('name', 'id');
+        $filters = $request->get('filter');
+        $query = Post::query();
 
-        $postsCollection = Post::orderBy('id', 'desc')
-//           ->with('category:id,name')
-            ->paginate(50);
+        $query->when($filters['category.id'] ?? null, function ($query, $category_id) {
+            $query->where('category_id', $category_id);
+        })->when($filters['category.name'] ?? null, function ($query, $category_name) {
+            $query->whereHas('category', function (Builder $query) use($category_name){
+                $query->where('name', 'like', $category_name . '%');
+            });
+        });
 
-//        dd($postsCollection);
-//        dd($postsCollection);
-//        $postsCollection->load('category:id,name');
-//        ->load()
 
+        $postsCollection = $query->orderBy('id', 'desc')
+           ->with('category:id,name')
+            ->paginate(10)
+            ->withQueryString();
 
 
         return view('web.posts.index', [
@@ -49,7 +56,6 @@ class PostController extends Controller
 
          $post = new Post;
          $post->title = $request->input('title');
-//         $post->category_id = $request->input('category');
          $post->slug = $request->input('slug');
          $post->excerpt = $request->input('excerpt');
          $post->content = $request->input('content');
@@ -61,9 +67,11 @@ class PostController extends Controller
     }
 
 
-    public function show(Post $post)
+    public function show(Post $post): View
     {
-        //
+        return view('web.posts.show', [
+            'post' => $post,
+        ]);
     }
 
 

@@ -25,6 +25,7 @@ class BookRequest extends FormRequest
             'page' => 'required|integer',
             'authors' => 'required|array',
             'year' => 'required|integer',
+            'file' => 'file|image',
         ];
     }
 
@@ -43,6 +44,14 @@ class BookRequest extends FormRequest
     public function getAuthorsIds(): array
     {
         return $this->input('authors');
+    }
+
+    public function bookFile(): array
+    {
+        return [
+            'hasFile' => $this->hasFile('file'),
+            'file' => $this->file
+        ];
     }
 
 }

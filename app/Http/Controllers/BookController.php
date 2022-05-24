@@ -18,31 +18,31 @@ class BookController extends Controller
 
     public function index(Request $request): View
     {
-        $authorsList = Author::select(['id','first_name', 'last_name', 'patronymic'])->get();
 
         $query = Book::query();
-//        if (!empty($value = $request->get('search_price'))) {
-//            $query->where('price', $value);
-//        }
-
         $query->when($request->get('search_price'), function ($query, $price) {
             $query->where('price', $price);
         });
 
-
         $booksCollection = $query->orderBy('id', 'desc')->paginate(5);
         return view('web.books.index', [
             'booksCollection' => $booksCollection,
+        ]);
+    }
+
+    public function create(): View
+    {
+        $authorsList = Author::select(['id','first_name', 'last_name', 'patronymic'])->get();
+        return view('web.books.create', [
             'authorsList' => $authorsList,
         ]);
     }
 
 
-
     public function store(BookRequest $request, BookService $service): RedirectResponse
     {
 
-        $book = $service->create($request->getDto(), $request->getAuthorsIds());
+        $book = $service->create($request->getDto(), $request->getAuthorsIds(), $request->bookFile());
 
         $service->notifyBook($book);
 
@@ -53,16 +53,14 @@ class BookController extends Controller
     public function edit($id): View
     {
         $book = Book::findOrFail($id);
-
-
         $authorsList = Author::select(['id', 'first_name', 'last_name', 'patronymic'])->get();
         $bookAuthors = $book->authors;
-        $booksCollection = Book::orderBy('id', 'desc')->paginate(5);
+//        $booksCollection = Book::orderBy('id', 'desc')->paginate(5);
 
         return view('web.books.edit', [
             'book' => $book,
             'bookAuthors' => $bookAuthors,
-            'booksCollection' => $booksCollection,
+//            'booksCollection' => $booksCollection,
             'authorsList' => $authorsList,
         ]);
     }

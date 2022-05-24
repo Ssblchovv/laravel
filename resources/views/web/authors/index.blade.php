@@ -30,12 +30,6 @@
             </div>
         </div>
         <div>
-            <label for="file" class="block text-sm font-medium text-gray-700">File</label>
-            <div class="mt-1">
-                <input type="file" name="file" id="file" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" value="{{ old('email') }}">
-            </div>
-        </div>
-        <div>
             <label for="biography" class="block text-sm font-medium text-gray-700">Biography</label>
             <div class="mt-1">
               <textarea rows="4" name="biography" id="biography" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md">{{ old('biography') }}</textarea>
@@ -49,7 +43,6 @@
 
 
 @section('content-right')
-<img src="/storage/uploads/2022-05-07-03-11-14-madagascar-smoke-quartz-tip-xl-97-x-66-x-65mm-608g-unique-piece-removebg-preview.png" alt="">
 <h2 class="text-2xl">Author Lists</h2>
 <table class="mt-10 min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">

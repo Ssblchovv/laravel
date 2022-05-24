@@ -66,6 +66,9 @@
           <th scope="col" class="relative px-6 py-3">
           <span class="sr-only">Edit</span>
         </th>
+          <th scope="col" class="relative px-6 py-3">
+              <span class="sr-only">Show</span>
+          </th>
         <th scope="col" class="relative px-6 py-3">
             <span class="sr-only">Remove</span>
           </th>
@@ -77,6 +80,9 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{$postItem->title}}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{$postItem->slug}}</td>
              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{$postItem->category->name}}</td>
+             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                 <a href="{{route('posts.show', ['post' => $postItem])}}" class="text-slate-600 hover:text-slate-900">Show</a>
+             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
               <a href="{{route('posts.edit', ['post' => $postItem])}}" class="text-slate-600 hover:text-slate-900">Edit</a>
             </td>

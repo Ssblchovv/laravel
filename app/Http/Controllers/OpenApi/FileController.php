@@ -49,21 +49,45 @@ class FileController extends Controller
             type: 'object'
         )
     )]
-    public function upload(Request $request)
+    public function upload(Request $request): string
     {
+
         $this->validate($request, [
-            'file' => 'required|file',
+//            'file' => 'required|file',
+            'file' => 'required|file|image',
+//            'file' => 'required|file|mimetypes:video/avi,video/mpeg,video/quicktime',
+//            'file' => 'required|file|mimes:pdf',
         ]);
 
         $file = $request->file('file');
 
         $timestamp = now()->format('Y-m-d-H-i-s');
-
+//        getClientOriginalName -  оригинальное имя
+//        getClientOriginalExtension -  расширение
         $filename = "{$timestamp}-{$file->getClientOriginalName()}";
 
         Storage::disk('public')->putFileAs("uploads", $file, $filename);
 
         return Storage::disk('public')->url("uploads/{$filename}");
+    }
+
+    public function uploadPrivate(Request $request): string
+    {
+
+        $this->validate($request, [
+            'file' => 'required|file|image',
+        ]);
+
+        $file = $request->file('file');
+
+        $timestamp = now()->format('Y-m-d-H-i-s');
+//        getClientOriginalName -  оригинальное имя
+//        getClientOriginalExtension -  расширение
+        $filename = "{$timestamp}-{$file->getClientOriginalName()}";
+
+        Storage::disk('private')->putFileAs("uploads", $file, $filename);
+//        Storage::download('file.jpg');
+        return 'Successful';
     }
 
     public function upload2(Request $request, FileUploader $fileUploader)

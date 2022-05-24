@@ -1,4 +1,27 @@
-https://zoom.us/s/89502170762#success
+sail artisan make:model Blog
+docker-compose exec laravel.test php artisan make:model Blog
+
+php artisan make:model Blog
+
+php artisan make:model Blog -m
+
+php artisan make:model Blog -m -r –f
+
+-m - создает миграцию
+-r - создает контролер с CRUD методами
+-f - создание фабрики
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -55,9 +55,6 @@ class AuthorController extends Controller
 
         $author = new Author;
         $author->name = $dto->name;
-//        $author->first_name = $request->input('first_name');
-//        $author->last_name = $request->input('last_name');
-//        $author->patronymic = $request->input('patronymic');
         $author->email = $dto->email;
         $author->biography = $dto->biography;
         $author->saveOrFail();
