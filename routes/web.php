@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ServiceCategoryController;
+use App\Models\ServiceCategory;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +43,14 @@ Route::post('/brands', [BrandController::class, 'store'])->name('brands.store');
 Route::put('/brands/{brand}', [BrandController::class, 'update'])->name('brands.update');
 Route::delete('/brands/{brand}', [BrandController::class, 'destroy'])->name('brands.destroy');
 Route::get('/brands/show-api', [BrandController::class, 'showApi'])->name('brands.show.api');
+
+Route::get('/sc', [ServiceCategoryController::class, 'index'])->name('sc.index');
+Route::get('/sc/create', [ServiceCategoryController::class, 'create'])->name('sc.create');
+Route::get('/sc/{sc}/edit', [ServiceCategoryController::class, 'edit'])->name('sc.edit');
+Route::post('/sc', [ServiceCategoryController::class, 'store'])->name('sc.store');
+Route::put('/sc/{sc}', [ServiceCategoryController::class, 'update'])->name('sc.update');
+Route::delete('/sc/{sc}', [ServiceCategoryController::class, 'destroy'])->name('sc.destroy');
+Route::get('/sc/show-api', [ServiceCategoryController::class, 'showApi'])->name('sc.show.api');
 
 
 
