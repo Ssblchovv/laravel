@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\PostController;
 
 /*
@@ -32,6 +33,14 @@ Route::post('/books', [BookController::class, 'store'])->name('books.store');
 Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
 Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
 Route::get('/books/show-api', [BookController::class, 'showApi'])->name('books.show.api');
+
+Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
+Route::get('/brands/create', [BrandController::class, 'create'])->name('brands.create');
+Route::get('/brands/{brand}/edit', [BrandController::class, 'edit'])->name('brands.edit');
+Route::post('/brands', [BrandController::class, 'store'])->name('brands.store');
+Route::put('/brands/{brand}', [BrandController::class, 'update'])->name('brands.update');
+Route::delete('/brands/{brand}', [BrandController::class, 'destroy'])->name('brands.destroy');
+Route::get('/brands/show-api', [BrandController::class, 'showApi'])->name('brands.show.api');
 
 
 
