@@ -8,12 +8,45 @@ use App\UseCase\Customer\CustomerService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $customersCollection = Customer::orderBy('id', 'desc')->paginate(5);
+        $first_name = $request->query('first_name');
+        $last_name = $request->query('last_name');
+        $patronymic = $request->query('patronymic');
+        $email = $request->query('email');
+        $sex = $request->query('sex');
+        $is_send_notify = $request->query('is_send_notify');
+
+        $query = Customer::orderBy('id', 'desc');
+        if ($first_name != null)
+        {
+            $query = $query->where('first_name', $first_name);
+        }
+        if ($last_name != null)
+        {
+            $query = $query->where('last_name', $last_name);
+        }
+        if ($patronymic != null)
+        {
+            $query = $query->where('patronymic', $patronymic);
+        }
+        if ($email != null)
+        {
+            $query = $query->where('email', $email);
+        }
+        if ($sex !== null and $sex !== '-1')
+        {
+            $query = $query->where('sex', $sex);
+        }
+        if ($is_send_notify !== null and $is_send_notify !== '-1')
+        {
+            $query = $query->where('is_send_notify', $is_send_notify);
+        }
+        $customersCollection = $query->paginate(5);
         return view('web.customers.index', ['customersCollection' => $customersCollection]);
     }
 
