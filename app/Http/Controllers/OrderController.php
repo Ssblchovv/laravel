@@ -12,13 +12,54 @@ use App\UseCase\Order\OrderService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $ordersCollection = Order::with(['service', 'customerCar', 'employee'])->orderBy('id', 'desc')->paginate(5);
-        return view('web.orders.index', ['ordersCollection' => $ordersCollection]);
+        $customer_car_id = $request->query('customer_car_id');
+        $service_id = $request->query('service_id');
+        $employee_id = $request->query('employee_id');
+        $status = $request->query('status');
+        $start_date = $request->query('start_date');
+        $end_date = $request->query('end_date');
+
+        $query = Order::with(['service', 'customerCar', 'employee'])->orderBy('id', 'desc');
+        if ($customer_car_id !== null and $customer_car_id !== '-1')
+        {
+            $query = $query->where('customer_car_id', $customer_car_id);
+        }
+        if ($service_id !== null and $service_id !== '-1')
+        {
+            $query = $query->where('service_id', $service_id);
+        }
+        if ($employee_id !== null and $employee_id !== '-1')
+        {
+            $query = $query->where('employee_id', $employee_id);
+        }
+        if ($status !== null and $status !== '-1')
+        {
+            $query = $query->where('status', $status);
+        }
+        if ($start_date != null)
+        {
+            $query = $query->where('start_date', $start_date);
+        }
+        if ($end_date != null)
+        {
+            $query = $query->where('end_date', $end_date);
+        }
+        $ordersCollection = $query->paginate(5);
+        $customersCollection = CustomerCar::with(['customer', 'car'])->orderBy('id', 'desc')->get();
+        $employeesCollection = Employee::orderBy('id', 'desc')->get();
+        $servicesCollection = Service::with('serviceCategory')->orderBy('id', 'desc')->get();
+        return view('web.orders.index', [
+            'ordersCollection' => $ordersCollection,
+            'customersCollection' => $customersCollection, 
+            'employeesCollection' => $employeesCollection, 
+            'servicesCollection' => $servicesCollection
+        ]);
     }
 
     public function create(): View
