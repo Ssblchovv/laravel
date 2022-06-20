@@ -1,10 +1,12 @@
 @extends('web.layout.wide')
 
 @section('content')
-<h2 class="text-2xl">Brands</h2>
-<a href="{{route('brands.create')}}" class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
-    New
-</a>
+<div class="flex gap-5">
+    <h2 class="text-2xl">Brands</h2>
+    <a href="{{route('brands.create')}}" class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
+        New
+    </a>
+</div>
 <table class="mt-10 min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
       <tr>
