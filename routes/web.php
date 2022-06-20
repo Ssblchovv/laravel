@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PostController;
@@ -68,6 +69,14 @@ Route::post('/customers', [CustomerController::class, 'store'])->name('customers
 Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
 Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 Route::get('/customers/show-api', [CustomerController::class, 'showApi'])->name('customers.show.api');
+
+Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
+Route::get('/cars/create', [CarController::class, 'create'])->name('cars.create');
+Route::get('/cars/{car}/edit', [CarController::class, 'edit'])->name('cars.edit');
+Route::post('/cars', [CarController::class, 'store'])->name('cars.store');
+Route::put('/cars/{car}', [CarController::class, 'update'])->name('cars.update');
+Route::delete('/cars/{car}', [CarController::class, 'destroy'])->name('cars.destroy');
+Route::get('/cars/show-api', [CarController::class, 'showApi'])->name('cars.show.api');
 
 
 
