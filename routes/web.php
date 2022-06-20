@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\CustomerCarController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PostController;
@@ -86,6 +87,14 @@ Route::post('/services', [ServiceController::class, 'store'])->name('services.st
 Route::put('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
 Route::delete('/services/{service}', [ServiceController::class, 'destroy'])->name('services.destroy');
 Route::get('/services/show-api', [ServiceController::class, 'showApi'])->name('services.show.api');
+
+Route::get('/ccs', [CustomerCarController::class, 'index'])->name('ccs.index');
+Route::get('/ccs/create', [CustomerCarController::class, 'create'])->name('ccs.create');
+Route::get('/ccs/{cc}/edit', [CustomerCarController::class, 'edit'])->name('ccs.edit');
+Route::post('/ccs', [CustomerCarController::class, 'store'])->name('ccs.store');
+Route::put('/ccs/{cc}', [CustomerCarController::class, 'update'])->name('ccs.update');
+Route::delete('/ccs/{cc}', [CustomerCarController::class, 'destroy'])->name('ccs.destroy');
+Route::get('/ccs/show-api', [CustomerCarController::class, 'showApi'])->name('ccs.show.api');
 
 
 

@@ -14,12 +14,12 @@ class ServiceCategoryController extends Controller
     public function index(): View
     {
         $scsCollection = ServiceCategory::orderBy('id', 'desc')->paginate(5);
-        return view('web.sc.index', ['scsCollection' => $scsCollection]);
+        return view('web.scs.index', ['scsCollection' => $scsCollection]);
     }
 
     public function create(): View
     {
-        return view('web.sc.create');
+        return view('web.scs.create');
     }
 
     public function store(ServiceCategoryRequest $request, ServiceCategoryService $service): RedirectResponse
@@ -31,7 +31,7 @@ class ServiceCategoryController extends Controller
     public function edit($id): View
     {
         $sc = ServiceCategory::findOrFail($id);
-        return view('web.sc.edit', ['sc' => $sc]);
+        return view('web.scs.edit', ['sc' => $sc]);
     }
 
     public function update($id, ServiceCategoryRequest $request, ServiceCategoryService $service): RedirectResponse
@@ -43,7 +43,17 @@ class ServiceCategoryController extends Controller
     public function destroy($id): RedirectResponse
     {
         $sc = ServiceCategory::findOrFail($id);
-        $sc->delete();
+        try
+        {
+            $sc->delete();
+        }
+        catch (\Illuminate\Database\QueryException $e)
+        {
+            if ($e->getCode() == 23000)
+            {
+                return back()->with('error', 'Resource cannot be deleted due to existence of related resources.');
+            }
+        }
 
         return redirect()->route('sc.index');
     }

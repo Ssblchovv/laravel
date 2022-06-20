@@ -46,7 +46,17 @@ class CarController extends Controller
     public function destroy($id): RedirectResponse
     {
         $car = Car::findOrFail($id);
-        $car->delete();
+        try
+        {
+            $car->delete();
+        }
+        catch (\Illuminate\Database\QueryException $e)
+        {
+            if ($e->getCode() == 23000)
+            {
+                return back()->with('error', 'Resource cannot be deleted due to existence of related resources.');
+            }
+        }
 
         return redirect()->route('cars.index');
     }

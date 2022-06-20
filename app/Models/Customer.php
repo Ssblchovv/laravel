@@ -36,4 +36,9 @@ class Customer extends Model
     use HasFactory;
 
     protected $fillable = ['first_name', 'last_name', 'patronymic', 'email', 'sex', 'is_send_notify'];
+
+    public function cars()
+    {
+        return $this->hasMany(CustomerCar::class);
+    }
 }

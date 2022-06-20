@@ -43,7 +43,17 @@ class CustomerController extends Controller
     public function destroy($id): RedirectResponse
     {
         $customer = Customer::findOrFail($id);
-        $customer->delete();
+        try
+        {
+            $customer->delete();
+        }
+        catch (\Illuminate\Database\QueryException $e)
+        {
+            if ($e->getCode() == 23000)
+            {
+                return back()->with('error', 'Resource cannot be deleted due to existence of related resources.');
+            }
+        }
 
         return redirect()->route('customers.index');
     }
