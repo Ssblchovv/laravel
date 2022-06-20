@@ -10,13 +10,32 @@ use App\UseCase\CustomerCar\CustomerCarService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class CustomerCarController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $ccsCollection = CustomerCar::with(['car', 'customer'])->orderBy('id', 'desc')->paginate(5);
-        return view('web.ccs.index', ['ccsCollection' => $ccsCollection]);
+        $year = $request->query('year');
+        $number = $request->query('number');
+        $customer_id = $request->query('customer_id');
+
+        $query = CustomerCar::with(['car', 'customer'])->orderBy('id', 'desc');
+        if ($year != null)
+        {
+            $query = $query->where('year', $year);
+        }
+        if ($number != null)
+        {
+            $query = $query->where('number', $number);
+        }
+        if ($customer_id !== null and $customer_id !== '-1')
+        {
+            $query = $query->where('customer_id', $customer_id);
+        }
+        $ccsCollection = $query->paginate(5);
+        $customersCollection = Customer::orderBy('id', 'desc')->get();
+        return view('web.ccs.index', ['ccsCollection' => $ccsCollection, 'customersCollection' => $customersCollection]);
     }
 
     public function create(): View

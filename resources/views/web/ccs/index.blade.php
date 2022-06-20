@@ -1,10 +1,42 @@
 @extends('web.layout.wide')
 
 @section('content')
-<h2 class="text-2xl">Customers cars</h2>
-<a href="{{route('ccs.create')}}" class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
-    New
-</a>
+<div class="flex gap-5">
+    <h2 class="text-2xl">Customers cars</h2>
+    <a href="{{route('ccs.create')}}" class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
+        New
+    </a>
+</div>
+<form method="GET" class="flex gap-5 mt-2">
+    <div>
+        <label for="year" class="block text-sm font-medium text-gray-700">Year</label>
+        <div class="mt-1">
+            <input type="number" name="year" id="year" class="h-10 shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" value="{{app('request')->input('year')}}">
+        </div>
+    </div>
+    <div>
+        <label for="number" class="block text-sm font-medium text-gray-700">Number</label>
+        <div class="mt-1">
+            <input type="text" name="number" id="number" class="h-10 shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" value="{{app('request')->input('number')}}">
+        </div>
+    </div>
+    <div>
+        <label for="customer_id" class="block text-sm font-medium text-gray-700">Customer</label>
+        <div class="mt-1">
+            <select id="customer_id" name="customer_id" class="h-10 form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
+                <option value="-1" {{app('request')->input('customer_id') == '-1' ? "selected" : ""}}>Select customer</option>
+                    @foreach  ($customersCollection as $customerItem)
+                    <option value="{{$customerItem->id}}" {{app('request')->input('customer_id') == $customerItem->id ? "selected" : ""}}>
+                      {{$customerItem->last_name}} {{$customerItem->first_name}} {{$customerItem->patronymic}}
+                    </option>
+                    @endforeach
+            </select>
+        </div>
+    </div>
+    <x-button>
+        Search
+    </x-button>
+</form>
 <table class="mt-10 min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
       <tr>
@@ -57,5 +89,5 @@
   </table>
 
 
-    {{ $ccsCollection->links() }}
+    {{ $ccsCollection->appends($_GET)->links() }}
 @endsection
