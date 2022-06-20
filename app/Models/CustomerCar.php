@@ -45,4 +45,9 @@ class CustomerCar extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

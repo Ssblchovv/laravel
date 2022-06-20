@@ -7,6 +7,7 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\CustomerCarController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ServiceCategoryController;
 use App\Http\Controllers\ServiceController;
@@ -95,6 +96,14 @@ Route::post('/ccs', [CustomerCarController::class, 'store'])->name('ccs.store');
 Route::put('/ccs/{cc}', [CustomerCarController::class, 'update'])->name('ccs.update');
 Route::delete('/ccs/{cc}', [CustomerCarController::class, 'destroy'])->name('ccs.destroy');
 Route::get('/ccs/show-api', [CustomerCarController::class, 'showApi'])->name('ccs.show.api');
+
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+Route::get('/orders/show-api', [OrderController::class, 'showApi'])->name('orders.show.api');
 
 
 

@@ -34,7 +34,13 @@ class Service extends Model
 
     protected $fillable = ['id_service_category', 'name', 'duration', 'price'];
 
-    public function serviceCategory() {
+    public function serviceCategory() 
+    {
         return $this->belongsTo(ServiceCategory::class, 'id_service_category');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

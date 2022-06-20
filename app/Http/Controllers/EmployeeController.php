@@ -43,7 +43,17 @@ class EmployeeController extends Controller
     public function destroy($id): RedirectResponse
     {
         $employee = Employee::findOrFail($id);
-        $employee->delete();
+        try
+        {
+            $employee->delete();
+        }
+        catch (\Illuminate\Database\QueryException $e)
+        {
+            if ($e->getCode() == 23000)
+            {
+                return back()->with('error', 'Resource cannot be deleted due to existence of related resources.');
+            }
+        }
 
         return redirect()->route('employees.index');
     }
