@@ -1,7 +1,7 @@
 @extends('web.layout.wide')
 
 @section('content')
-    <h1 class="text-2xl">Book Edit</h1>
+    <h1 class="text-2xl">Edit car</h1>
 
     <form method="POST" action="{{route('cars.update', ['car' => $car])}}" class="mt-10 space-y-5">
         @method('PUT')
