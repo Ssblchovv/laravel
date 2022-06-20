@@ -1,10 +1,35 @@
 @extends('web.layout.wide')
 
 @section('content')
-<h2 class="text-2xl">Employees</h2>
-<a href="{{route('employees.create')}}" class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
-    New
-</a>
+<div class="flex gap-5">
+    <h2 class="text-2xl">Employees</h2>
+    <a href="{{route('employees.create')}}" class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
+        New
+    </a>
+</div>
+<form method="GET" class="flex gap-5 mt-2">
+    <div>
+        <label for="first_name" class="block text-sm font-medium text-gray-700">First name</label>
+        <div class="mt-1">
+          <input type="text" name="first_name" id="first_name" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" value="{{ app('request')->input('first_name') }}">
+        </div>
+    </div>
+    <div>
+        <label for="last_name" class="block text-sm font-medium text-gray-700">Last name</label>
+        <div class="mt-1">
+          <input type="text" name="last_name" id="last_name" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" value="{{ app('request')->input('last_name') }}">
+        </div>
+    </div>
+    <div>
+        <label for="patronymic" class="block text-sm font-medium text-gray-700">Patronymic</label>
+        <div class="mt-1">
+          <input type="text" name="patronymic" id="patronymic" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" value="{{ app('request')->input('patronymic') }}">
+        </div>
+    </div>
+    <x-button>
+        Search
+    </x-button>
+</form>
 <table class="mt-10 min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
       <tr>
@@ -53,5 +78,5 @@
   </table>
 
 
-    {{ $employeesCollection->links() }}
+    {{ $employeesCollection->appends($_GET)->links() }}
 @endsection

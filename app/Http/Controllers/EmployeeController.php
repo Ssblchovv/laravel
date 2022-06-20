@@ -8,12 +8,30 @@ use App\UseCase\Employee\EmployeeService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $employeesCollection = Employee::orderBy('id', 'desc')->paginate(5);
+        $first_name = $request->query('first_name');
+        $last_name = $request->query('last_name');
+        $patronymic = $request->query('patronymic');
+
+        $query = Employee::orderBy('id', 'desc');
+        if ($first_name != null)
+        {
+            $query = $query->where('first_name', $first_name);
+        }
+        if ($last_name != null)
+        {
+            $query = $query->where('last_name', $last_name);
+        }
+        if ($patronymic != null)
+        {
+            $query = $query->where('patronymic', $patronymic);
+        }
+        $employeesCollection = $query->paginate(5);
         return view('web.employees.index', ['employeesCollection' => $employeesCollection]);
     }
 
