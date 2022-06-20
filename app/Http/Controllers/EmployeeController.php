@@ -17,6 +17,11 @@ class EmployeeController extends Controller
         return view('web.employees.index', ['employeesCollection' => $employeesCollection]);
     }
 
+    public function create(): View
+    {
+        return view('web.employees.create');
+    }
+
     public function store(EmployeeRequest $request, EmployeeService $service): RedirectResponse
     {
         $service->create($request->getDto());
@@ -26,9 +31,7 @@ class EmployeeController extends Controller
     public function edit($id): View
     {
         $employee = Employee::findOrFail($id);
-        $employeesCollection = Employee::orderBy('id', 'desc')->paginate(5);
-
-        return view('web.employees.edit', ['employee' => $employee, 'employeesCollection' => $employeesCollection]);
+        return view('web.employees.edit', ['employee' => $employee]);
     }
 
     public function update($id, EmployeeRequest $request, EmployeeService $service): RedirectResponse

@@ -21,7 +21,7 @@ class CustomerRequest extends FormRequest
             'last_name' => 'required|max:255',
             'patronymic' => 'max:255',
             'email' => 'nullable|email',
-            'sex' => 'nullable',
+            'sex' => 'nullable|integer|min:0|max:1',
             'is_send_notify' => 'nullable',
         ];
     }
@@ -33,8 +33,8 @@ class CustomerRequest extends FormRequest
             last_name: $this->input('last_name'),
             patronymic: $this->input('patronymic'),
             email: $this->input('email'),
-            sex: $this->input('sex') === 'on',
-            is_send_notify: $this->input('is_send_notify') == 'on',
+            sex: $this->input('sex') === '1',
+            is_send_notify: $this->request->has('is_send_notify'),
         );
     }
 

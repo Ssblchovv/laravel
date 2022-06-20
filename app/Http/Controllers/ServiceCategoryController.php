@@ -17,6 +17,11 @@ class ServiceCategoryController extends Controller
         return view('web.sc.index', ['scsCollection' => $scsCollection]);
     }
 
+    public function create(): View
+    {
+        return view('web.sc.create');
+    }
+
     public function store(ServiceCategoryRequest $request, ServiceCategoryService $service): RedirectResponse
     {
         $service->create($request->getDto());
@@ -26,9 +31,7 @@ class ServiceCategoryController extends Controller
     public function edit($id): View
     {
         $sc = ServiceCategory::findOrFail($id);
-        $scsCollection = ServiceCategory::orderBy('id', 'desc')->paginate(5);
-
-        return view('web.sc.edit', ['sc' => $sc, 'scsCollection' => $scsCollection]);
+        return view('web.sc.edit', ['sc' => $sc]);
     }
 
     public function update($id, ServiceCategoryRequest $request, ServiceCategoryService $service): RedirectResponse

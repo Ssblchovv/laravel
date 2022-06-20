@@ -1,32 +1,10 @@
-@extends('web.layout.layout')
+@extends('web.layout.wide')
 
-@push('css')
-<style>
-    .ck-editor__editable_inline {
-        min-height: 200px;
-    }
-    </style>
-@endpush
-
-@section('content-left')
-    <h1 class="text-2xl">Service Categories</h1>
-
-    <form method="POST" action="{{ route('sc.store') }}" class="mt-10 space-y-5">
-        @csrf
-        <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-            <div class="mt-1">
-              <input type="text" name="name" id="name" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" value="{{ old('name') }}">
-            </div>
-        </div>
-        <button type="submit" class="w-full rounded-md px-4 py-3 font-semibold text-sm bg-sky-500 hover:bg-sky-600 text-white shadow-sm transition-colors">Create</button>
-
-    </form>
-@endsection
-
-
-@section('content-right')
-<h2 class="text-2xl">Service Categories List</h2>
+@section('content')
+<h2 class="text-2xl">Service Categories</h2>
+<a href="{{route('sc.create')}}" class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
+    New
+</a>
 <table class="mt-10 min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
       <tr>

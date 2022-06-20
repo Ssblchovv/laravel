@@ -17,6 +17,11 @@ class CustomerController extends Controller
         return view('web.customers.index', ['customersCollection' => $customersCollection]);
     }
 
+    public function create(): View
+    {
+        return view('web.customers.create');
+    }
+
     public function store(CustomerRequest $request, CustomerService $service): RedirectResponse
     {
         $service->create($request->getDto());
@@ -26,9 +31,7 @@ class CustomerController extends Controller
     public function edit($id): View
     {
         $customer = Customer::findOrFail($id);
-        $customersCollection = Customer::orderBy('id', 'desc')->paginate(5);
-
-        return view('web.customers.edit', ['customer' => $customer, 'customersCollection' => $customersCollection]);
+        return view('web.customers.edit', ['customer' => $customer]);
     }
 
     public function update($id, CustomerRequest $request, CustomerService $service): RedirectResponse

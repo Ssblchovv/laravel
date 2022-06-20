@@ -17,6 +17,11 @@ class BrandController extends Controller
         return view('web.brands.index', ['brandsCollection' => $brandsCollection]);
     }
 
+    public function create(): View
+    {
+        return view('web.brands.create');
+    }
+
     public function store(BrandRequest $request, BrandService $service): RedirectResponse
     {
         $service->create($request->getDto());
@@ -26,9 +31,7 @@ class BrandController extends Controller
     public function edit($id): View
     {
         $brand = Brand::findOrFail($id);
-        $brandsCollection = Brand::orderBy('id', 'desc')->paginate(5);
-
-        return view('web.brands.edit', ['brand' => $brand, 'brandsCollection' => $brandsCollection]);
+        return view('web.brands.edit', ['brand' => $brand]);
     }
 
     public function update($id, BrandRequest $request, BrandService $service): RedirectResponse
