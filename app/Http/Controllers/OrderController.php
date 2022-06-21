@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Http\Requests\Order\OrderRequest;
-use App\Models\Car;
 use App\Models\CustomerCar;
 use App\Models\Employee;
 use App\Models\Service;
 use App\UseCase\Order\OrderService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -24,8 +24,13 @@ class OrderController extends Controller
         $status = $request->query('status');
         $start_date = $request->query('start_date');
         $end_date = $request->query('end_date');
+        $show_trashed = $request->query('show_trashed');
 
         $query = Order::with(['service', 'customerCar', 'employee'])->orderBy('id', 'desc');
+        if ($show_trashed !== null)
+        {
+            $query = $query->onlyTrashed();
+        }
         if ($customer_car_id !== null and $customer_car_id !== '-1')
         {
             $query = $query->where('customer_car_id', $customer_car_id);
@@ -56,8 +61,8 @@ class OrderController extends Controller
         $servicesCollection = Service::with('serviceCategory')->orderBy('id', 'desc')->get();
         return view('web.orders.index', [
             'ordersCollection' => $ordersCollection,
-            'customersCollection' => $customersCollection, 
-            'employeesCollection' => $employeesCollection, 
+            'customersCollection' => $customersCollection,
+            'employeesCollection' => $employeesCollection,
             'servicesCollection' => $servicesCollection
         ]);
     }
@@ -68,8 +73,8 @@ class OrderController extends Controller
         $employeesCollection = Employee::orderBy('id', 'desc')->get();
         $servicesCollection = Service::with('serviceCategory')->orderBy('id', 'desc')->get();
         return view('web.orders.create', [
-            'customersCollection' => $customersCollection, 
-            'employeesCollection' => $employeesCollection, 
+            'customersCollection' => $customersCollection,
+            'employeesCollection' => $employeesCollection,
             'servicesCollection' => $servicesCollection
         ]);
     }
@@ -89,11 +94,17 @@ class OrderController extends Controller
         $employeesCollection = Employee::orderBy('id', 'desc')->get();
         $servicesCollection = Service::with('serviceCategory')->orderBy('id', 'desc')->get();
         return view('web.orders.edit', [
-            'order' => $order, 
-            'customersCollection' => $customersCollection, 
-            'employeesCollection' => $employeesCollection, 
+            'order' => $order,
+            'customersCollection' => $customersCollection,
+            'employeesCollection' => $employeesCollection,
             'servicesCollection' => $servicesCollection
         ]);
+    }
+
+    public function restore($id): RedirectResponse
+    {
+        Order::onlyTrashed()->findOrFail($id)->restore();
+        return back()->with('success', 'Order was restored');
     }
 
     public function update($id, OrderRequest $request, OrderService $service): RedirectResponse
@@ -104,10 +115,19 @@ class OrderController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        $order = Order::findOrFail($id);
-        $order->delete();
+        try
+        {
+            $order = Order::findOrFail($id);
+            $order->delete();
+        }
+        catch (ModelNotFoundException $e)
+        {
+            $order = Order::onlyTrashed()->findOrFail($id);
+            $order->forceDelete();
+            return back()->with('success', 'Order was completely deleted');
+        }
 
-        return redirect()->route('orders.index');
+        return back()->with('success', 'Order was trashed');
     }
 
     public function showApi(): JsonResponse

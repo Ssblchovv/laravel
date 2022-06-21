@@ -16,7 +16,7 @@
                 @foreach  ($customersCollection as $customerItem)
                 <option value="{{$customerItem->id}}" {{app('request')->input('customer_car_id') == $customerItem->id ? 'selected' : ''}}>
                     {{$customerItem->car->brand->name}} {{$customerItem->car->model}} {{$customerItem->car->year}}
-                      - 
+                      -
                     {{$customerItem->customer->last_name}} {{$customerItem->customer->first_name}} {{$customerItem->customer->patronymic}}
                 </option>
                 @endforeach
@@ -71,6 +71,12 @@
             <input type="date" name="end_date" id="end_date" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" value="{{app('request')->input('end_date')}}">
         </div>
     </div>
+    <div>
+        <label for="show_trashed" class="block text-sm font-medium text-gray-700">Show trashed</label>
+        <div class="mt-1">
+          <input type="checkbox" name="show_trashed" id="show_trashed" class="h-10 shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-md" {{ app('request')->input('show_trashed') ? 'checked' : '' }}>
+        </div>
+    </div>
     <x-button>
         Search
     </x-button>
@@ -107,9 +113,15 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{$orderItem->status == 0? "Created" : "Completed"}}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{date('d.m.Y', strtotime($orderItem->start_date))}}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{date('d.m.Y', strtotime($orderItem->end_date))}}</td>
+            @if ($orderItem->trashed())
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <a href="{{route('orders.restore', ['order' => $orderItem])}}" class="text-slate-600 hover:text-slate-900">Restore</a>
+            </td>
+            @else
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
               <a href="{{route('orders.edit', ['order' => $orderItem])}}" class="text-slate-600 hover:text-slate-900">Edit</a>
             </td>
+            @endif
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <form action="{{route('orders.destroy', ['order' => $orderItem])}}" method="POST">
                     @method('DELETE')
