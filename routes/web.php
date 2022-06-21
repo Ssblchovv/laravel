@@ -100,6 +100,7 @@ Route::get('/ccs/show-api', [CustomerCarController::class, 'showApi'])->name('cc
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
 Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+Route::get('/orders/{order}/complete', [OrderController::class, 'complete'])->name('orders.complete');
 Route::get('/orders/{order}/restore', [OrderController::class, 'restore'])->name('orders.restore');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');

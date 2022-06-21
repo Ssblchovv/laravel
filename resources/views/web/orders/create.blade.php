@@ -13,7 +13,7 @@
                     @foreach  ($customersCollection as $customerItem)
                     <option value="{{$customerItem->id}}">
                         {{$customerItem->car->brand->name}} {{$customerItem->car->model}} {{$customerItem->car->year}}
-                         - 
+                         -
                         {{$customerItem->customer->last_name}} {{$customerItem->customer->first_name}} {{$customerItem->customer->patronymic}}
                     </option>
                     @endforeach
@@ -39,16 +39,6 @@
                     @foreach  ($employeesCollection as $employeeItem)
                     <option value="{{$employeeItem->id}}">{{$employeeItem->last_name}} {{$employeeItem->first_name}} {{$employeeItem->patronymic}}</option>
                     @endforeach
-                </select>
-            </div>
-        </div>
-        <div>
-            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-            <div class="mt-1">
-                <select id="status" name="status" class="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
-                    <option value="-1" selected>Select status here</option>
-                    <option value="0">Created</option>
-                    <option value="1">Completed</option>
                 </select>
             </div>
         </div>

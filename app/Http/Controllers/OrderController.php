@@ -101,6 +101,14 @@ class OrderController extends Controller
         ]);
     }
 
+    public function complete($id): RedirectResponse
+    {
+        Order::findOrFail($id)->updateOrFail([
+            'status' => \App\Enums\Status::COMPLETED->value,
+        ]);
+        return back()->with('success', 'Order marked as completed');
+    }
+
     public function restore($id): RedirectResponse
     {
         Order::onlyTrashed()->findOrFail($id)->restore();

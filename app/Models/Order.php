@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $service_id
  * @property int $customer_car_id
  * @property int $employee_id
- * @property Status $status
+ * @property \App\Enums\Status $status
  * @property \Illuminate\Support\Carbon $start_date
  * @property \Illuminate\Support\Carbon $end_date
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
-    
+
     protected $fillable = ['service_id', 'customer_car_id', 'employee_id', 'status', 'start_date', 'end_date'];
 
     public function service()

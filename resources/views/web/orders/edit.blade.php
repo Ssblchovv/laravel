@@ -1,7 +1,12 @@
 @extends('web.layout.wide')
 
 @section('content')
-    <h1 class="text-2xl">Edit order</h1>
+    <div class="flex gap-5">
+        <h2 class="text-2xl">Edit order</h2>
+        <a href="{{route('orders.complete', ['order' => $order])}}" class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
+            Mark as completed
+        </a>
+    </div>
 
     <form method="POST" action="{{route('orders.update', ['order' => $order])}}" class="mt-10 space-y-5">
         @method('PUT')
@@ -14,7 +19,7 @@
                     @foreach  ($customersCollection as $customerItem)
                     <option value="{{$customerItem->id}}" {{$order->customerCar->id == $customerItem->id ? "selected" : ""}}>
                         {{$customerItem->car->brand->name}} {{$customerItem->car->model}} {{$customerItem->car->year}}
-                         - 
+                         -
                         {{$customerItem->customer->last_name}} {{$customerItem->customer->first_name}} {{$customerItem->customer->patronymic}}
                     </option>
                     @endforeach

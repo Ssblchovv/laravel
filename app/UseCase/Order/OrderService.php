@@ -31,7 +31,7 @@ class OrderService
 
     public function notifyOrder($order)
     {
-        if ($order->customerCar->customer->is_send_notify) 
+        if ($order->customerCar->customer->is_send_notify)
         {
             $this->mailer->send(new NewOrder($order));
         }
@@ -45,7 +45,7 @@ class OrderService
             'service_id' => $orderDto->service_id,
             'customer_car_id' => $orderDto->customer_car_id,
             'employee_id' => $orderDto->employee_id,
-            'status' => $orderDto->status,
+            'status' => $orderDto->status->value,
             'start_date' => $orderDto->start_date,
             'end_date' => $orderDto->end_date,
         ]);
